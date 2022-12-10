@@ -9,9 +9,9 @@ mainWindow.onresize = function(){
     //window.location.reload(true)
 }
 
-// ------------------------------------.
-//          SPRITE PIXEL STYLE         |
-// ------------------------------------'
+//--------------------.
+// SPRITE PIXEL STYLE |
+//--------------------'
 /**
  * Prevent pixel smoothing, preserve pixeled image when scaled.
  * @param {object} context 
@@ -23,9 +23,9 @@ function pixelFrame(context) {
     context.msImageSmoothingEnabled = false;
 }
 
-// --------------------------------.
-//          SETTING CANVAS         |
-// --------------------------------'
+//----------------.
+// SETTING CANVAS |
+//----------------'
 const canvas = document.getElementById('canvasId');
 const canvasCtx = canvas.getContext('2d');
 const wi = mainWindow.innerWidth;
@@ -36,45 +36,71 @@ const wr = Math.round(wi/10)*10;
 const hr = Math.round(hi/10)*10;
 //alert('w: '+wi+' h: '+hi+' --- '+' wr: '+wr+' hr: '+hr);
 // black border on canvas.
-const frameBlackBorder = 20; 
+const frameBlackBorder = setting.canvas.border; 
 canvas.width = wr-frameBlackBorder;
 canvas.height = hr-frameBlackBorder;
 const deltaX = (wi - canvas.width)/2;
 const deltaY = (hi - canvas.height)/2;
 pixelFrame(canvasCtx);
 
-// ----------------------.
-//          GAME         |
-// ----------------------'
-//game = new Game('MetalBuax', mainWindow);
+//---------.
+// SETTING |
+//---------'
+console.log('setting: ',setting);
 
-console.log('data: '+setting.timeout.animation);
+//------.
+// GAME |
+//------'
+var game = new Game();
 
-// -----------------------.
-//       PAINT LOOP       |
-// -----------------------'
+//------------.
+// PAINT LOOP |
+//------------'
 function paint(){
     requestAnimationFrame(paint);
+    game.paint(canvasCtx);
 }
 paint();
 
-// ---------------------------.
-//      ANIMATION LOOP        |
-// ---------------------------'
+//----------------.
+// ANIMATION LOOP |
+//----------------'
 function animation(){
     setTimeout(animation, setting.timeout.animation);
-    console.log(' > animation');
+    game.animation();
 }
 animation();
 
-// ---------------------------.
-//      COLLISION LOOP        |
-// ---------------------------'
+//----------------.
+// COLLISION LOOP |
+//----------------'
 function collision(){
-    setTimeout(collision, setting.timeout.cosllision);
-    console.log(' > collision');
+    setTimeout(collision, setting.timeout.collision);
+    game.collision();
 }
 collision();
+
+//----------------.
+// Mouse Listener |
+//----------------'
+mainWindow.addEventListener('click', (event) => {
+    game.click();
+});
+
+mainWindow.addEventListener('mousemove', (event) => {
+    game.mousemove(event.offsetX, event.offsetY);
+});
+
+//-------------------.
+// Keyboard Listener |
+//-------------------'
+mainWindow.addEventListener('keydown', function(event){
+    game.keydown(event.key, event.code);
+});
+
+mainWindow.addEventListener('keyup', function(event){
+    game.keyup(event.key, event.code);
+});
 
 /*
  * Load file async.
