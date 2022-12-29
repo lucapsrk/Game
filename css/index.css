@@ -18,7 +18,7 @@ body{
 }
 
 .inner{
-    /*cursor: none; <--------------- HIDE CURSOR */
+    cursor: none; /*<--------------- HIDE CURSOR */
     position: absolute;
     left: 50%;
     top: 50%;

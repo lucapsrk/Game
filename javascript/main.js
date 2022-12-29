@@ -1,3 +1,4 @@
+
 // Init window.
 const mainWindow = window;
 
@@ -8,6 +9,13 @@ mainWindow.onresize = function(){
     location.reload(true); 
     //window.location.reload(true)
 }
+
+/** 
+ * Prevent rigth click on canvas. 
+ */
+mainWindow.addEventListener("contextmenu", function (event){
+    event.preventDefault();
+}, false);
 
 //--------------------.
 // SPRITE PIXEL STYLE |
@@ -37,16 +45,23 @@ const hr = Math.round(hi/10)*10;
 //alert('w: '+wi+' h: '+hi+' --- '+' wr: '+wr+' hr: '+hr);
 // black border on canvas.
 const frameBlackBorder = setting.canvas.border; 
-canvas.width = wr-frameBlackBorder;
-canvas.height = hr-frameBlackBorder;
+canvas.width = wr - frameBlackBorder;
+canvas.height = hr - frameBlackBorder;
 const deltaX = (wi - canvas.width)/2;
 const deltaY = (hi - canvas.height)/2;
-pixelFrame(canvasCtx);
+// Text [scaled]
+canvasCtx.font = text.default.weight+' '+text.default.size+'px '+text.default.font;
+// Pixelize
+if(setting.canvas.pixelize){
+    pixelFrame(canvasCtx);
+}
 
 //---------.
 // SETTING |
 //---------'
-console.log('setting: ',setting);
+if(setting.debug.enable){
+    console.log('setting: ',setting);
+} 
 
 //------.
 // GAME |
@@ -58,7 +73,12 @@ var game = new Game();
 //------------'
 function paint(){
     requestAnimationFrame(paint);
+    // Scale & Paint
+    canvasCtx.save();
+    //canvasCtx.translate(0,0);
+    canvasCtx.scale(setting.canvas.scale, setting.canvas.scale);
     game.paint(canvasCtx);
+    canvasCtx.restore();
 }
 paint();
 
@@ -84,11 +104,12 @@ collision();
 // Mouse Listener |
 //----------------'
 mainWindow.addEventListener('click', (event) => {
-    game.click();
+    game.click(event);
 });
 
+// Mouse move [scaled]
 mainWindow.addEventListener('mousemove', (event) => {
-    game.mousemove(event.offsetX, event.offsetY);
+    game.mousemove(event.offsetX/setting.canvas.scale, event.offsetY/setting.canvas.scale);
 });
 
 //-------------------.
