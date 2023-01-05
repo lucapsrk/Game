@@ -53,3 +53,27 @@ const keyCode = {
     D: 'KeyD',
     SPACE: 'Space'
 };
+
+//-----------.
+// Animation |
+//-----------'
+const ANIMATION = {
+    IDLE: 'idle',
+    WALK: 'walk',
+    JUMP: 'rump',
+    PUNCH: 'punch'
+};
+
+//-----------.
+// Direction |
+//-----------'
+const DIRECTION = {
+    UP: 'up',
+    UPRIGHT: 'up-right',
+    RIGHT: 'right',
+    DOWNRIGHT: 'down-right',
+    DOWN: 'down',
+    DOWNLEFT: 'down-left',
+    LEFT: 'left',
+    UPLEFT: 'up-left'
+};

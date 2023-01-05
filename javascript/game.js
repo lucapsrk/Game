@@ -1,91 +1,3 @@
-//--------.
-// Entity |
-//--------'
-class Entity {
-    constructor(x,y,name){
-        this.x = x;
-        this.y = y;
-        this.name = name;
-        this.height = 0;
-        // ----------------------------------TEMP-------------------------------
-        // TODO: test
-        this.sprites = {
-            "front": new Image(),
-            "back": new Image(),
-            "test": new Image()
-        };
-        this.sprites.front.src = 'image/siormax_front.png';
-        this.sprites.back.src = 'image/siormax_back.png';
-        this.sprites.test.src = 'image/test.png';
-        this.setSprite(this.sprites.test);
-        //this.sprite = new Image();
-        //this.sprite.src = 'image/siormax2.png';
-        // ----------------------------------TEMP-------------------------------
-    }
-
-    setSprite(image){
-        this.height = image.height;
-        this.sprite = image;
-    }
-
-    paintEntity(context){
-        // ----------------------------------TEMP-------------------------------
-        //this.paintImage(context,this.sprite,this.x,this.y);
-        this.paintImageFlip(context,this.sprite,this.x,this.y);
-        // ----------------------------------TEMP-------------------------------
-        if(setting.debug.enable){
-            // Circle
-            context.save();
-            context.beginPath();
-            context.globalAlpha = text.default.dot.alpha;
-            context.fillStyle = text.default.color;
-            context.arc(this.x, this.y, 10, 0, 2*Math.PI);
-            context.fill(); // riempe
-            context.globalAlpha = 1;
-            context.restore();
-            // Box
-            context.save();
-            context.globalAlpha = text.default.box.alpha;
-            context.fillRect(this.x, this.y, text.default.size*7, text.default.size*4);
-            context.restore();
-            // Debug: Mouse pointer position
-            context.save();
-            context.fillStyle = text.default.color;//'#66FF99';
-            context.fillText('Entity'+this.name, this.x+text.default.box.textOffset, this.y+text.default.size+text.default.linespace);
-            context.fillText('x: '+this.x.toFixed(2), this.x+text.default.box.textOffset, this.y+text.default.size*2+text.default.linespace);
-            context.fillText('y: '+this.y.toFixed(2), this.x+text.default.box.textOffset, this.y+text.default.size*3+text.default.linespace);
-            context.restore();
-        }
-    }
-
-    /* Paint image */
-    paintImage(context,image,x,y){
-        context.drawImage(
-            image,
-            x-image.width/setting.canvas.scale,
-            y-image.height/setting.canvas.scale
-        );
-    }
-
-    /* Paint image flipped horizontaly */
-    paintImageFlip(context,image,x,y){
-        context.save();
-        context.translate(x+image.width,y);
-        context.scale(-1,1);
-        context.drawImage(
-            image,
-            image.width/2,
-            -image.height/2
-            //image.width/setting.canvas.scale,
-            //image.height/setting.canvas.scale
-        );
-        context.restore();
-
-        //console.log("------- imageW: "+image.width+" imageH: "+image.height+"");
-    }
-
-}
-
 //------.
 // Game |
 //------'
@@ -107,7 +19,7 @@ class Game extends GameInterface {
         // TODO: Entities
         this.sortArrayY(this.entities);
         this.entities.forEach((entity) => {
-            entity.paintEntity(context);
+            entity.paint(context);
         });
         // Pointer
         this.paintPointer(context);
@@ -126,7 +38,9 @@ class Game extends GameInterface {
     click(event){
         console.log(' < click '+event.button);
         // TODO: test pain entities
-        this.entities.push(new Entity(this.mouseX,this.mouseY,this.entitiesCount++));
+        //this.entities.push(new Entity(this.mouseX,this.mouseY,this.entitiesCount++));
+
+        this.entities.push(new Element(this.mouseX,this.mouseY,'Element-'+this.entitiesCount++,'punto'));
     }
 
     mousemove(x, y){
@@ -142,13 +56,13 @@ class Game extends GameInterface {
             case 'Digit1':
                 // code block
                 this.entities.forEach((entity) => {
-                    entity.sprite = entity.sprites.front;
+                    entity.direction = DIRECTION.LEFT;
                 });
                 break;
             case 'Digit2':
                 // code block
                 this.entities.forEach((entity) => {
-                    entity.sprite = entity.sprites.back;
+                    entity.direction = DIRECTION.RIGHT;
                 });
             break;
           }
@@ -171,8 +85,6 @@ class Game extends GameInterface {
     }
 
     paintPointer(context) {
-        
-
         // Debug: Mouse pointer position
         if(setting.debug.enable){
             // Circle
@@ -213,7 +125,7 @@ class Game extends GameInterface {
         context.restore();
     }
 
-    /* Sort array elements by */
+    /* Sort array elements by ...*/
     sortArrayY(array){
         array.sort(function(a, b){
             // aggiungo alla y, metà della sprite

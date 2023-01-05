@@ -1,4 +1,6 @@
-
+//--------.
+// Window |
+//--------'
 // Init window.
 const mainWindow = window;
 
@@ -11,14 +13,14 @@ mainWindow.onresize = function(){
 }
 
 /** 
- * Prevent rigth click on canvas. 
+ * Disable rigth click on canvas. 
  */
 mainWindow.addEventListener("contextmenu", function (event){
     event.preventDefault();
 }, false);
 
 //--------------------.
-// SPRITE PIXEL STYLE |
+// Sprite pixel style |
 //--------------------'
 /**
  * Prevent pixel smoothing, preserve pixeled image when scaled.
@@ -31,9 +33,9 @@ function pixelFrame(context) {
     context.msImageSmoothingEnabled = false;
 }
 
-//----------------.
-// SETTING CANVAS |
-//----------------'
+//--------.
+// Canvas |
+//--------'
 const canvas = document.getElementById('canvasId');
 const canvasCtx = canvas.getContext('2d');
 const wi = mainWindow.innerWidth;
@@ -51,25 +53,28 @@ const deltaX = (wi - canvas.width)/2;
 const deltaY = (hi - canvas.height)/2;
 // Text [scaled]
 canvasCtx.font = text.default.weight+' '+text.default.size+'px '+text.default.font;
-// Pixelize
+
+//----------.
+// Pixelize |
+//----------'
 if(setting.canvas.pixelize){
     pixelFrame(canvasCtx);
 }
 
-//---------.
-// SETTING |
-//---------'
+//-------.
+// Debug |
+//-------'
 if(setting.debug.enable){
     console.log('setting: ',setting);
 } 
 
 //------.
-// GAME |
+// Game |
 //------'
 var game = new Game();
 
 //------------.
-// PAINT LOOP |
+// Paint loop |
 //------------'
 function paint(){
     requestAnimationFrame(paint);
@@ -83,7 +88,7 @@ function paint(){
 paint();
 
 //----------------.
-// ANIMATION LOOP |
+// Animation loop |
 //----------------'
 function animation(){
     setTimeout(animation, setting.timeout.animation);
@@ -92,7 +97,7 @@ function animation(){
 animation();
 
 //----------------.
-// COLLISION LOOP |
+// Collision loop |
 //----------------'
 function collision(){
     setTimeout(collision, setting.timeout.collision);
@@ -103,6 +108,7 @@ collision();
 //----------------.
 // Mouse Listener |
 //----------------'
+// Mouse click
 mainWindow.addEventListener('click', (event) => {
     game.click(event);
 });
@@ -115,6 +121,7 @@ mainWindow.addEventListener('mousemove', (event) => {
 //-------------------.
 // Keyboard Listener |
 //-------------------'
+// Keyboard
 mainWindow.addEventListener('keydown', function(event){
     game.keydown(event.key, event.code);
 });
