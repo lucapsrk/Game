@@ -87,6 +87,15 @@ function paint(){
 }
 paint();
 
+//-------------.
+// Update loop |
+//-------------'
+function update(){
+    setTimeout(update, setting.timeout.update);
+    game.update();
+}
+update();
+
 //----------------.
 // Animation loop |
 //----------------'

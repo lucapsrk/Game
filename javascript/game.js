@@ -8,31 +8,73 @@ class Game extends GameInterface {
         this.currentState = null;
         this.mouseX = 0;
         this.mouseY = 0;
+        // debug
+        this.updateDebugCount = 0;
+        this.animationDebugCount = 0;
+        this.collisionDebugCount = 0;
         // entity
         this.entitiesCount = 1;
         this.entities = [];
+        // Pointer 
+        this.pointer = new Element(this.mouseX,this.mouseY,'Pointer','pointer');
     }
 
     paint(context) {
         // Background
         this.paintBackground(context);
         // TODO: Entities
-        this.sortArrayY(this.entities);
+        sortArrayByHitbox(this.entities);
         this.entities.forEach((entity) => {
             entity.paint(context);
         });
         // Pointer
-        this.paintPointer(context);
-        // Center
-        this.paintCenter(context);
+        this.pointer.paint(context);
+        // Info
+        if(setting.debug.enable){
+            this.paintInfo(context);
+        }
+    }
+
+    update(){
+        // debug
+        if(setting.debug.enable){
+            //console.log(' > update');
+            this.updateDebugCount++;
+        }
+        // update
+        this.entities.forEach((entity) => {
+            entity.update();
+        });
     }
 
     animation() {
-        //console.log(' > animation');
+        // debug
+        if(setting.debug.enable){
+            //console.log(' > animation');
+            this.animationDebugCount++;
+        }
+        // animation 
+        // ----------------------------- TEST -----------------------------
+        this.entities.forEach((entity) => {
+            if(entity.getDirection() == DIRECTION.LEFT){
+                entity.setDirection(DIRECTION.RIGHT);
+            }else{
+                entity.setDirection(DIRECTION.LEFT);
+            }
+        });
+        // ----------------------------- TEST -----------------------------
     }
 
     collision() {
-        //console.log(' > collision');
+        // debug
+        if(setting.debug.enable){
+            //console.log(' > collision');
+            this.collisionDebugCount++;
+        }
+        // collision
+        this.entities.forEach((entity) => {
+            entity.getHitbox().setHit(collisionBetweenCircles(entity, this.pointer));
+        });
     }
 
     click(event){
@@ -47,6 +89,10 @@ class Game extends GameInterface {
         //console.log(' < mouse x: '+x+' y: '+y);
         this.mouseX = x;
         this.mouseY = y;
+        // Pointer
+        this.pointer.setX(this.mouseX);
+        this.pointer.setY(this.mouseY);
+        this.pointer.update();
     }
 
     keydown(key, code){
@@ -84,33 +130,7 @@ class Game extends GameInterface {
         context.restore();
     }
 
-    paintPointer(context) {
-        // Debug: Mouse pointer position
-        if(setting.debug.enable){
-            // Circle
-            context.save();
-            context.beginPath();
-            context.globalAlpha = text.default.dot.alpha;
-            context.fillStyle = 'red';
-            context.arc(this.mouseX, this.mouseY, 2.5, 0, 2*Math.PI);
-            context.fill(); // riempe
-            context.restore();
-            // Box
-            context.save();
-            context.globalAlpha = text.default.box.alpha;
-            context.fillRect(this.mouseX, this.mouseY, text.default.size*7, text.default.size*4);
-            context.restore();
-            // Text
-            context.save();
-            context.fillStyle = text.default.color;
-            context.fillText('Pointer', this.mouseX+text.default.box.textOffset, this.mouseY+text.default.size);
-            context.fillText('x: '+this.mouseX.toFixed(2), this.mouseX+text.default.box.textOffset, this.mouseY+text.default.size*2);
-            context.fillText('y: '+this.mouseY.toFixed(2), this.mouseX+text.default.box.textOffset, this.mouseY+text.default.size*3);
-            context.restore();
-        }
-    }
-
-    paintCenter(context) {
+    paintInfo(context) {
         // Circle
         context.save();
         context.beginPath();
@@ -123,15 +143,18 @@ class Game extends GameInterface {
         );
         context.fill();
         context.restore();
-    }
-
-    /* Sort array elements by ...*/
-    sortArrayY(array){
-        array.sort(function(a, b){
-            // aggiungo alla y, metà della sprite
-            if(a.y+a.height < b.y+b.height) return -1;
-            if(a.y+a.height > b.y+b.height) return 1;
-            return 0;   
-        });
+        // Box
+        context.save();
+        context.globalAlpha = text.default.box.alpha;
+        context.fillRect(0, 0, text.default.size*10, text.default.size*5);
+        context.restore();
+        // Info
+        context.save();
+        context.fillStyle = text.default.color;
+        context.fillText('Info', text.default.box.textOffset, text.default.size);
+        context.fillText(' update: '+this.updateDebugCount, text.default.box.textOffset, text.default.size*2);
+        context.fillText(' animation: '+this.animationDebugCount, text.default.box.textOffset, text.default.size*3);
+        context.fillText(' collision: '+this.collisionDebugCount, text.default.box.textOffset, text.default.size*4);
+        context.restore();
     }
 }

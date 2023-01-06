@@ -2,41 +2,44 @@
 // Settings |
 //----------'
 const setting = {
-    'canvas': {
-        'border': 30,
-        'pixelize': true,
-        'scale': 5,
-        'color': 'grey'//'#1A1A1A'
+    canvas: {
+        border: 30,
+        pixelize: true,
+        scale: 3,
+        color: 'grey'//'#1A1A1A'
     },
-    'timeout': {
-        'animation': 2000,
-        'collision': 4000
+    timeout: {
+        update: 250,
+        animation: 2000,
+        collision: 200
     },
-    'debug': {
-        'enable': true
+    debug: {
+        enable: true
     }
 };
 
 const text = {
-    'default': {
-        'size': 14/setting.canvas.scale,
-        'weight': 'lighter',
-        'linespace': 1/setting.canvas.scale, 
-        'font': 'Courier New',
-        'color': 'white',
-        'box': {
-            'alpha': 0.75,
-            'textOffset': 5/setting.canvas.scale
+    default: {
+        size: 14/setting.canvas.scale,
+        weight: 'lighter',
+        linespace: 1/setting.canvas.scale, 
+        font: 'Courier New',
+        color: 'white',
+        box: {
+            alpha: 0.75,
+            textOffset: 5/setting.canvas.scale
         },
-        'dot': {
-            'alpha': 0.5
+        dot: {
+            alpha: 0.5,
+            color: 'yellow',
+            size: 5
         },
-        'center': {
-            'alpha': 0.75,
-            'color': 'green'
+        center: {
+            alpha: 0.75,
+            color: 'green'
         }
     },
-    'debug': 0
+    debug: 0
 };
 
 //------.
