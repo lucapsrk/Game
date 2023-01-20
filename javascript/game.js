@@ -16,12 +16,18 @@ class Game extends GameInterface {
         this.entitiesCount = 1;
         this.entities = [];
         // Pointer 
-        this.pointer = new Element(this.mouseX,this.mouseY,'Pointer','pointer');
+        this.pointer = new Element(this.mouseX,this.mouseY,'Pointer','pointer','image/test.png');
+        // ----------------------------- TEST -----------------------------
+        this.bk =  new Element(centerX,centerY,'Background','bg','image/map.jpg');
+        // ----------------------------- TEST -----------------------------
     }
 
     paint(context) {
         // Background
         this.paintBackground(context);
+        // ----------------------------- TEST -----------------------------
+        this.bk.paint(context);
+        // ----------------------------- TEST -----------------------------
         // TODO: Entities
         sortArrayByHitbox(this.entities);
         this.entities.forEach((entity) => {
@@ -30,7 +36,7 @@ class Game extends GameInterface {
         // Pointer
         this.pointer.paint(context);
         // Info
-        if(setting.debug.enable){
+        if(setting.debug.info){
             this.paintInfo(context);
         }
     }
@@ -82,7 +88,7 @@ class Game extends GameInterface {
         // TODO: test pain entities
         //this.entities.push(new Entity(this.mouseX,this.mouseY,this.entitiesCount++));
 
-        this.entities.push(new Element(this.mouseX,this.mouseY,'Element-'+this.entitiesCount++,'punto'));
+        this.entities.push(new Element(this.mouseX,this.mouseY,'Element-'+this.entitiesCount++,'punto','image/test.png'));
     }
 
     mousemove(x, y){
@@ -111,6 +117,12 @@ class Game extends GameInterface {
                     entity.direction = DIRECTION.RIGHT;
                 });
             break;
+            case 'Digit3':
+                // code block
+                console.log('------DATABASE-START----');
+                
+                console.log('------DATABASE-END-----');
+            break;
           }
           // ----------------------------------TEMP-------------------------------
     }
@@ -137,8 +149,7 @@ class Game extends GameInterface {
         context.globalAlpha = text.default.center.alpha;
         context.fillStyle = text.default.center.color;
         context.arc(
-            (canvas.width/setting.canvas.scale)/2, 
-            (canvas.height/setting.canvas.scale)/2, 
+            centerX,centerY, 
             2.5, 0, 2*Math.PI
         );
         context.fill();

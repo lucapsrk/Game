@@ -5,7 +5,7 @@ const setting = {
     canvas: {
         border: 30,
         pixelize: true,
-        scale: 3,
+        scale: 1,
         color: 'grey'//'#1A1A1A'
     },
     timeout: {
@@ -14,7 +14,8 @@ const setting = {
         collision: 200
     },
     debug: {
-        enable: true
+        enable: false,
+        info: false
     }
 };
 

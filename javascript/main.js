@@ -51,6 +51,8 @@ canvas.width = wr - frameBlackBorder;
 canvas.height = hr - frameBlackBorder;
 const deltaX = (wi - canvas.width)/2;
 const deltaY = (hi - canvas.height)/2;
+const centerX = (canvas.width/setting.canvas.scale)/2;
+const centerY = (canvas.height/setting.canvas.scale)/2;
 // Text [scaled]
 canvasCtx.font = text.default.weight+' '+text.default.size+'px '+text.default.font;
 

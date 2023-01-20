@@ -46,7 +46,7 @@ class GameInterface {
 // Element |
 //---------'
 class Element{
-    constructor(x,y,name,element){
+    constructor(x,y,name,element,spriteSrc){
         this.x = x;
         this.y = y;
         this.name = name;
@@ -54,7 +54,7 @@ class Element{
         this.direction = DIRECTION.RIGHT;
         this.animation = ANIMATION.IDLE;
         this.sprite = new Image();
-        this.sprite.src = 'image/test.png';
+        this.sprite.src = spriteSrc;//'image/test.png';
         this.hitbox = new Hitbox(x,y+this.sprite.height/2,10);
     }
 
