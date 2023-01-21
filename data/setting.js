@@ -3,9 +3,11 @@
 //----------'
 const setting = {
     canvas: {
-        border: 30,
+        height: 600,
+        width: 600,
         pixelize: true,
-        scale: 1,
+        rightclick: true,
+        scale: 4.4,
         color: 'grey'//'#1A1A1A'
     },
     timeout: {
@@ -14,8 +16,8 @@ const setting = {
         collision: 200
     },
     debug: {
-        enable: false,
-        info: false
+        enable: true,
+        info: true
     }
 };
 

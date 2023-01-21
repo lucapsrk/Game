@@ -1,25 +1,29 @@
 html{
     margin: 0;
     height: 100%;
+    background: black;
 }
 
 body{
     margin: 0;
-    height: 100%;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    background: black;
+    min-height: 100%;
+    position: relative;
+    /* outline border: cornice */
+    outline: 25px solid rgb(24, 24, 24);
+    outline-offset: -25px;
+    z-index: 1;
 }
 
 .outer {
     margin: 0;
     height: 100%;
     position: relative;
+    z-index: -1;
 }
 
 .inner{
-    cursor: none; /*<--------------- HIDE CURSOR */
-    position: absolute;
+    /*cursor: none; <--------------- HIDE CURSOR */
+    position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);

@@ -119,9 +119,7 @@ class Game extends GameInterface {
             break;
             case 'Digit3':
                 // code block
-                console.log('------DATABASE-START----');
-                
-                console.log('------DATABASE-END-----');
+                this.bk.x += 10; 
             break;
           }
           // ----------------------------------TEMP-------------------------------

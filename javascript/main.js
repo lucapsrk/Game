@@ -5,18 +5,23 @@
 const mainWindow = window;
 
 /**
- * Refresh page on windows resize.
+ * Refresh canvas on window resize.
  */ 
 mainWindow.onresize = function(){ 
-    location.reload(true); 
-    //window.location.reload(true)
+    setCanvas();
+    setFont();
+    if(setting.canvas.pixelize){
+        pixelFrame(canvasCtx);
+    }
 }
 
 /** 
  * Disable rigth click on canvas. 
  */
 mainWindow.addEventListener("contextmenu", function (event){
-    event.preventDefault();
+    if(!setting.canvas.rightclick){
+        event.preventDefault();
+    }
 }, false);
 
 //--------------------.
@@ -38,23 +43,33 @@ function pixelFrame(context) {
 //--------'
 const canvas = document.getElementById('canvasId');
 const canvasCtx = canvas.getContext('2d');
-const wi = mainWindow.innerWidth;
-const hi = mainWindow.innerHeight;
-// Arrotondo alla decina più prossima per mantenere la proporzione
-// e permettere l'ingrandimento dei pixel senza blur.
-const wr = Math.round(wi/10)*10;
-const hr = Math.round(hi/10)*10;
-//alert('w: '+wi+' h: '+hi+' --- '+' wr: '+wr+' hr: '+hr);
-// black border on canvas.
-const frameBlackBorder = setting.canvas.border; 
-canvas.width = wr - frameBlackBorder;
-canvas.height = hr - frameBlackBorder;
-const deltaX = (wi - canvas.width)/2;
-const deltaY = (hi - canvas.height)/2;
-const centerX = (canvas.width/setting.canvas.scale)/2;
-const centerY = (canvas.height/setting.canvas.scale)/2;
-// Text [scaled]
-canvasCtx.font = text.default.weight+' '+text.default.size+'px '+text.default.font;
+var deltaX = null;
+var deltaY = null;
+var centerX = null;
+var centerY = null;
+setCanvas();
+setFont();
+
+//------------.
+// Set Canvas |
+//------------'
+function setCanvas(){
+    // Set canvas size
+    canvas.width = setting.canvas.width;
+    canvas.height = setting.canvas.height;
+    // Set dynamics variables
+    deltaX = (mainWindow.innerWidth - canvas.width)/2;
+    deltaY = (mainWindow.innerHeight - canvas.height)/2;
+    centerX = (canvas.width/setting.canvas.scale)/2;
+    centerY = (canvas.height/setting.canvas.scale)/2;
+}
+
+//-------------------.
+// Set Text [scaled] |
+//-------------------'
+function setFont(){
+    canvasCtx.font = text.default.weight+' '+text.default.size+'px '+text.default.font;
+}
 
 //----------.
 // Pixelize |
