@@ -8,6 +8,8 @@ class Game extends GameInterface {
         this.currentState = null;
         this.mouseX = 0;
         this.mouseY = 0;
+        // keys
+        this.keysPressed = new Set();
         // debug
         this.updateDebugCount = 0;
         this.animationDebugCount = 0;
@@ -102,7 +104,8 @@ class Game extends GameInterface {
     }
 
     keydown(key, code){
-        console.log(' < keydown key: '+key+' code: '+code);
+        //console.log(' < keydown key: '+key+' code: '+code);
+        this.keysPressed.add(code);
         // ----------------------------------TEMP-------------------------------
         switch(code) {
             case 'Digit1':
@@ -126,7 +129,8 @@ class Game extends GameInterface {
     }
 
     keyup(key, code){
-        console.log(' < keyup key: '+key+' code: '+code);
+        //console.log(' < keyup key: '+key+' code: '+code);
+        this.keysPressed.delete(code);
     }
 
     //-------.
@@ -155,15 +159,16 @@ class Game extends GameInterface {
         // Box
         context.save();
         context.globalAlpha = text.default.box.alpha;
-        context.fillRect(0, 0, text.default.size*10, text.default.size*5);
+        context.fillRect(0, 0, setting.canvas.width, text.default.size*6);
         context.restore();
         // Info
         context.save();
         context.fillStyle = text.default.color;
         context.fillText('Info', text.default.box.textOffset, text.default.size);
-        context.fillText(' update: '+this.updateDebugCount, text.default.box.textOffset, text.default.size*2);
-        context.fillText(' animation: '+this.animationDebugCount, text.default.box.textOffset, text.default.size*3);
-        context.fillText(' collision: '+this.collisionDebugCount, text.default.box.textOffset, text.default.size*4);
+        context.fillText(' update: ' + this.updateDebugCount, text.default.box.textOffset, text.default.size*2);
+        context.fillText(' animation: ' + this.animationDebugCount, text.default.box.textOffset, text.default.size*3);
+        context.fillText(' collision: ' + this.collisionDebugCount, text.default.box.textOffset, text.default.size*4);
+        context.fillText(' keysPressed: ' + Array.from(this.keysPressed.values()), text.default.box.textOffset, text.default.size*5);
         context.restore();
     }
 }

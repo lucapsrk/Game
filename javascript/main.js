@@ -10,9 +10,7 @@ const mainWindow = window;
 mainWindow.onresize = function(){ 
     setCanvas();
     setFont();
-    if(setting.canvas.pixelize){
-        pixelFrame(canvasCtx);
-    }
+    pixelFrame(canvasCtx, setting.canvas.pixelize);
 }
 
 /** 
@@ -24,18 +22,37 @@ mainWindow.addEventListener("contextmenu", function (event){
     }
 }, false);
 
-//--------------------.
-// Sprite pixel style |
-//--------------------'
 /**
- * Prevent pixel smoothing, preserve pixeled image when scaled.
- * @param {object} context 
+ * Set Canvas size and center coordinates.
  */
-function pixelFrame(context) {
-    context.imageSmoothingEnabled = false;
-    context.mozImageSmoothingEnabled = false;
-    context.webkitImageSmoothingEnabled = false;
-    context.msImageSmoothingEnabled = false;
+function setCanvas() {
+    // Set canvas size
+    canvas.width = setting.canvas.width;
+    canvas.height = setting.canvas.height;
+    // Set canvas center variables
+    centerX = (canvas.width/setting.canvas.scale)/2;
+    centerY = (canvas.height/setting.canvas.scale)/2;
+}
+
+/**
+ * Set canvas text font and size.
+ */  
+function setFont() {
+    canvasCtx.font = text.default.weight+' '+text.default.size+'px '+text.default.font;
+}
+
+/**
+ * If enable is true, prevent pixel smoothing, preserve pixeled image when scaled.
+ * @param {object} context 
+ * @param {boolean} enable 
+ */
+function pixelFrame(context, enable) {
+    if(enable) {
+        context.imageSmoothingEnabled = false;
+        context.mozImageSmoothingEnabled = false;
+        context.webkitImageSmoothingEnabled = false;
+        context.msImageSmoothingEnabled = false;    
+    }
 }
 
 //--------.
@@ -43,45 +60,16 @@ function pixelFrame(context) {
 //--------'
 const canvas = document.getElementById('canvasId');
 const canvasCtx = canvas.getContext('2d');
-var deltaX = null;
-var deltaY = null;
 var centerX = null;
 var centerY = null;
 setCanvas();
 setFont();
-
-//------------.
-// Set Canvas |
-//------------'
-function setCanvas(){
-    // Set canvas size
-    canvas.width = setting.canvas.width;
-    canvas.height = setting.canvas.height;
-    // Set dynamics variables
-    deltaX = (mainWindow.innerWidth - canvas.width)/2;
-    deltaY = (mainWindow.innerHeight - canvas.height)/2;
-    centerX = (canvas.width/setting.canvas.scale)/2;
-    centerY = (canvas.height/setting.canvas.scale)/2;
-}
-
-//-------------------.
-// Set Text [scaled] |
-//-------------------'
-function setFont(){
-    canvasCtx.font = text.default.weight+' '+text.default.size+'px '+text.default.font;
-}
-
-//----------.
-// Pixelize |
-//----------'
-if(setting.canvas.pixelize){
-    pixelFrame(canvasCtx);
-}
+pixelFrame(canvasCtx, setting.canvas.pixelize);
 
 //-------.
 // Debug |
 //-------'
-if(setting.debug.enable){
+if(setting.debug.enable) {
     console.log('setting: ',setting);
 } 
 
@@ -93,11 +81,14 @@ var game = new Game();
 //------------.
 // Paint loop |
 //------------'
-function paint(){
+/**
+ * Call requestAnimationFrame (60 FPS). 
+ * On each call, canvas scale it's set and game elemets draws. 
+ */
+function paint() {
     requestAnimationFrame(paint);
     // Scale & Paint
     canvasCtx.save();
-    //canvasCtx.translate(0,0);
     canvasCtx.scale(setting.canvas.scale, setting.canvas.scale);
     game.paint(canvasCtx);
     canvasCtx.restore();
@@ -107,7 +98,7 @@ paint();
 //-------------.
 // Update loop |
 //-------------'
-function update(){
+function update() {
     setTimeout(update, setting.timeout.update);
     game.update();
 }
@@ -116,7 +107,7 @@ update();
 //----------------.
 // Animation loop |
 //----------------'
-function animation(){
+function animation() {
     setTimeout(animation, setting.timeout.animation);
     game.animation();
 }
@@ -125,7 +116,7 @@ animation();
 //----------------.
 // Collision loop |
 //----------------'
-function collision(){
+function collision() {
     setTimeout(collision, setting.timeout.collision);
     game.collision();
 }

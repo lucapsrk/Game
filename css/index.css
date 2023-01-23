@@ -22,7 +22,7 @@ body{
 }
 
 .inner{
-    /*cursor: none; <--------------- HIDE CURSOR */
+    /*cursor: none; <- HIDE CURSOR */
     position: fixed;
     left: 50%;
     top: 50%;

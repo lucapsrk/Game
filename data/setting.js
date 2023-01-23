@@ -7,7 +7,7 @@ const setting = {
         width: 600,
         pixelize: true,
         rightclick: true,
-        scale: 4.4,
+        scale: 4,
         color: 'grey'//'#1A1A1A'
     },
     timeout: {
