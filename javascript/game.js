@@ -18,9 +18,9 @@ class Game extends GameInterface {
         this.entitiesCount = 1;
         this.entities = [];
         // Pointer 
-        this.pointer = new Element(this.mouseX,this.mouseY,'Pointer','pointer','image/test.png');
+        this.pointer = new Element(this.mouseX,this.mouseY,'Pointer','pointer','image/pointer2.png');
         // ----------------------------- TEST -----------------------------
-        this.bk =  new Element(centerX,centerY,'Background','bg','image/map.jpg');
+        this.bk =  new Element(centerX,centerY,'Background','bg','image/map.png');
         // ----------------------------- TEST -----------------------------
     }
 
